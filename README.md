@@ -4,26 +4,41 @@ Bem-vindo ao repositório do backend do sistema **Na Sua Mão**
 
 ## 🚀 Como rodar o projeto localmente
 
-Para que todos da equipe consigam rodar o servidor no próprio computador, sigam estes passos:
+Siga estes passos exatos para configurar o ambiente e rodar o servidor no seu computador:
 
-1. **Clone o repositório:**
-   ```bash
-   git clone [https://github.com/SeuUsuario/na-sua-mao-api.git](https://github.com/SeuUsuario/na-sua-mao-api.git)
+1.  **Clone o repositório:**
+    Abra o seu terminal (ou GitKraken) e use o comando abaixo:
+    ```bash
+    git clone [https://github.com/Na-sua-mao/na-sua-mao-api.git](https://github.com/Na-sua-mao/na-sua-mao-api.git)
+    ```
 
-2.Crie o ambiente virtual
+2.  **Configurar o Ambiente Virtual:**
+    Entre na pasta do projeto e use os comandos abaixo no terminal (um de cada vez):
 
-python -m venv venv
-.\venv\Scripts\activate  # No Windows
+    * **Para Criar o ambiente:**
+        ```bash
+        python -m venv venv
+        ```
+    * **Para Ativar o ambiente (No Windows):**
+        ```powershell
+        .\venv\Scripts\activate
+        ```
+    * *(Caso use Mac ou Linux, o comando de ativação é: `source venv/bin/activate`)*
 
-3.Instale as dependências
+3.  **Instalar as dependências:**
+    Com o ambiente virtual ativado, rode:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-pip install -r requirements.txt
+4.  **Iniciar o servidor local:**
+    Use o comando abaixo para colocar a API no ar:
+    ```bash
+    uvicorn src.main:app --reload
+    ```
 
-4.Inicie o servidor local
+5.  **Acesse no navegador:**
+    * Ver a API rodando: Abra `http://localhost:8000`
+    * **Documentação automática (FastAPI):** Acesse `http://localhost:8000/docs` para testar os endpoints.
 
-uvicorn src.main:app --reload
-
-5.Acesse no navegador
-
-Abra http://localhost:8000 para ver a API rodando. A documentação automática do FastAPI estará disponível em http://localhost:8000/docs.
 
