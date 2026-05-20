@@ -9,7 +9,8 @@ Siga estes passos exatos para configurar o ambiente e rodar o servidor no seu co
 1.  **Clone o repositório:**
     Abra o seu terminal (ou GitKraken) e use o comando abaixo:
     ```bash
-    git clone [https://github.com/Na-sua-mao/na-sua-mao-api.git](https://github.com/Na-sua-mao/na-sua-mao-api.git)
+    git clone https://github.com/Na-sua-mao/na-sua-mao-api.git
+
     ```
 
 2.  **Configurar o Ambiente Virtual:**
