@@ -1,8 +1,6 @@
 # 🛠️ Na Sua Mão - API (Backend)
 
-Bem-vindo ao repositório do backend do sistema **Na Sua Mão**, uma plataforma de economia compartilhada para aluguel de ferramentas entre vizinhos. 
-
-Este projeto é parte do Trabalho de Conclusão de Curso (TCC) e está sendo desenvolvido em **Python** com **FastAPI** e **SQLAlchemy**.
+Bem-vindo ao repositório do backend do sistema **Na Sua Mão**
 
 ## 🚀 Como rodar o projeto localmente
 
