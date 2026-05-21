@@ -40,6 +40,7 @@ Siga estes passos exatos para configurar o ambiente e rodar o servidor no seu co
 
 5.  **Acesse no navegador:**
     * Ver a API rodando: Abra `http://localhost:8000`
+    * **Documentação automática (FastAPI):** Acesse `http://localhost:8000/docs` para testar os endpoints.
     
 
 
