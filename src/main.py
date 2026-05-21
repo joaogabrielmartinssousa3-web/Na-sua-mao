@@ -1,12 +1,12 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from src.schemas.usuario import UsuarioCreate
-from src.schemas.ferramenta import FerramentaCreate # <-- Adicione esta linha
+from src.schemas.ferramenta import FerramentaCreate 
 from src.database import engine, get_db
 from src.models.usuario import Base, Usuario
-from src.models.ferramenta import Ferramenta # Adicione esta linha!
+from src.models.ferramenta import Ferramenta
 
-# Esta linha diz ao SQLAlchemy para ler os nossos modelos e criar as tabelas no SQLite se não existirem
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Na Sua Mão - API")
@@ -15,20 +15,20 @@ app = FastAPI(title="Na Sua Mão - API")
 def read_root():
     return {"message": "API Na Sua Mão está rodando perfeitamente!"}
 
-# Atualizámos a rota para receber o 'db' como dependência
+
 @app.post("/usuarios", tags=["Usuários"])
 def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)):
-    # 1. Transformar o Schema do FastAPI num Modelo do Banco de Dados
+    
     novo_usuario = Usuario(
         nome=usuario.nome,
         cpf=usuario.cpf,
         endereco=usuario.endereco
     )
     
-    # 2. Salvar no Banco de Dados
-    db.add(novo_usuario) # Adiciona na fila
-    db.commit()          # Salva de forma definitiva
-    db.refresh(novo_usuario) # Atualiza o objeto para pegar o ID gerado automaticamente
+    
+    db.add(novo_usuario) 
+    db.commit()          
+    db.refresh(novo_usuario) 
     
     return {
         "mensagem": "Usuário cadastrado com sucesso de verdade!",

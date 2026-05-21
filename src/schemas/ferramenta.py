@@ -3,5 +3,5 @@ from typing import Optional
 
 class FerramentaCreate(BaseModel):
     nome: str
-    descricao: Optional[str] = None # A descrição é opcional
+    descricao: Optional[str] = None 
     disponivel: bool = True
