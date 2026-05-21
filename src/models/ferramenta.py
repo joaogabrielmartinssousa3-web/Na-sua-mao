@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean
+
 from src.models.usuario import Base 
 
 class Ferramenta(Base):

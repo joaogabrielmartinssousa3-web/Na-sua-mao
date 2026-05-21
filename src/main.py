@@ -4,7 +4,7 @@ from src.schemas.usuario import UsuarioCreate
 from src.schemas.ferramenta import FerramentaCreate 
 from src.database import engine, get_db
 from src.models.usuario import Base, Usuario
-from src.models.ferramenta import Ferramenta
+from src.models.ferramenta import Ferramenta 
 
 
 Base.metadata.create_all(bind=engine)
@@ -18,27 +18,21 @@ def read_root():
 
 @app.post("/usuarios", tags=["Usuários"])
 def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)):
-    
+   
     novo_usuario = Usuario(
         nome=usuario.nome,
+        email=usuario.email,
+        senha=usuario.senha,
         cpf=usuario.cpf,
-        endereco=usuario.endereco
+        cep=usuario.cep,
+        telefone=usuario.telefone
     )
     
+    db.add(novo_usuario)
+    db.commit()
+    db.refresh(novo_usuario)
     
-    db.add(novo_usuario) 
-    db.commit()          
-    db.refresh(novo_usuario) 
-    
-    return {
-        "mensagem": "Usuário cadastrado com sucesso de verdade!",
-        "usuario": {
-            "id": novo_usuario.id,
-            "nome": novo_usuario.nome,
-            "cpf": novo_usuario.cpf,
-            "endereco": novo_usuario.endereco
-        }
-    }
+    return {"mensagem": "Usuário salvo com sucesso no MySQL!", "usuario_id": novo_usuario.id_usuario}
 @app.post("/ferramentas", tags=["Ferramentas"])
 def criar_ferramenta(ferramenta: FerramentaCreate, db: Session = Depends(get_db)):
     nova_ferramenta = Ferramenta(
