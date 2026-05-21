@@ -14,7 +14,7 @@ Siga estes passos exatos para configurar o ambiente e rodar o servidor no seu co
     ```
 
 2.  **Configurar o Ambiente Virtual:**
-    Entre na pasta do projeto e use os comandos abaixo no terminal (um de cada vez):
+    Entre na pasta do projeto e use os comandos abaixo no terminal:
 
     * **Para Criar o ambiente:**
         ```bash
