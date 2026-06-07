@@ -11,3 +11,6 @@ class FerramentaService:
 
     def listar_ferramentas(self, db: Session):
         return self.repository.listar_ferramentas(db)
+
+    def deletar_ferramenta(self, db: Session, id_ferramenta: int):
+        return self.repository.deletar_ferramenta(db, id_ferramenta)

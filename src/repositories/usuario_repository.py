@@ -3,16 +3,20 @@ from src.models.usuario import Usuario
 from src.schemas.usuario import UsuarioCreate
 
 class UsuarioRepository:
-    def criar_usuario(self, db: Session, usuario_schema: UsuarioCreate):
-        novo_usuario = Usuario(
-            nome=usuario_schema.nome,
-            email=usuario_schema.email,
-            senha=usuario_schema.senha,
-            cpf=usuario_schema.cpf,
-            cep=usuario_schema.cep,
-            telefone=usuario_schema.telefone
-        )
-        db.add(novo_usuario)
+    def criar_usuario(self, db: Session, usuario: UsuarioCreate):
+        db_usuario = Usuario(**usuario.model_dump()) # ou usuario.dict()
+        db.add(db_usuario)
         db.commit()
-        db.refresh(novo_usuario)
-        return novo_usuario
+        db.refresh(db_usuario)
+        return db_usuario
+
+    def listar_usuarios(self, db: Session):
+        return db.query(Usuario).all()
+
+    def deletar_usuario(self, db: Session, id_usuario: int):
+        usuario = db.query(Usuario).filter(Usuario.id_usuario == id_usuario).first()
+        if usuario:
+            db.delete(usuario)
+            db.commit()
+            return True
+        return False

@@ -10,6 +10,7 @@ class Ferramenta(Base):
     titulo = Column(String(100), nullable=False)
     descricao = Column(Text)
     voltagem = Column(Enum('110v', '220v', 'Bivolt', 'Bateria'), nullable=False)
-    estado_conservacao = Column(Enum('Novo', 'Excelente', 'Bom'), nullable=False)
+    estado_conservacao = Column(Enum('Novo', 'Usado - Excelente', 'Usado - Bom', name="estado_conservacao_enum"), nullable=False)
+    imagem_url = Column(String(255))
     preco_diaria = Column(DECIMAL(10,2), nullable=False)
     status_ferramenta = Column(Enum('Disponível', 'Reservado', 'Em Uso', 'Em Manutenção'), server_default='Disponível')

@@ -11,3 +11,6 @@ class CategoriaService:
 
     def listar_categorias(self, db: Session):
         return self.repository.listar_categorias(db)
+
+    def deletar_categoria(self, db: Session, id_categoria: int):
+        return self.repository.deletar_categoria(db, id_categoria)

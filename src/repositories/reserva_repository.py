@@ -4,17 +4,19 @@ from src.schemas.reserva import ReservaCreate
 
 class ReservaRepository:
     def criar_reserva(self, db: Session, reserva: ReservaCreate):
-        nova_reserva = Reserva(
-            id_locatario=reserva.id_locatario,
-            id_ferramenta=reserva.id_ferramenta,
-            data_prevista_inicio=reserva.data_prevista_inicio,
-            data_prevista_fim=reserva.data_prevista_fim,
-            valor_total_calculado=reserva.valor_total_calculado
-        )
-        db.add(nova_reserva)
+        db_reserva = Reserva(**reserva.model_dump()) # ou reserva.dict() dependendo da versão do Pydantic
+        db.add(db_reserva)
         db.commit()
-        db.refresh(nova_reserva)
-        return nova_reserva
+        db.refresh(db_reserva)
+        return db_reserva
 
     def listar_reservas(self, db: Session):
         return db.query(Reserva).all()
+
+    def deletar_reserva(self, db: Session, id_reserva: int):
+        reserva = db.query(Reserva).filter(Reserva.id_reserva == id_reserva).first()
+        if reserva:
+            db.delete(reserva)
+            db.commit()
+            return True
+        return False
