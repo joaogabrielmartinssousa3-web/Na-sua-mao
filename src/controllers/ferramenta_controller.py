@@ -6,19 +6,19 @@ from src.schemas.ferramenta import FerramentaCreate, FerramentaResponse
 from src.services.ferramenta_service import FerramentaService
 import shutil
 
-# 1. Primeiro definimos o router
+
 router = APIRouter(prefix="/ferramentas", tags=["Ferramentas"])
 ferramenta_service = FerramentaService()
 
-# 2. Agora podemos usar o @router nas rotas
+
 @router.post("/upload-foto/")
 async def upload_foto(file: UploadFile = File(...)):
-    # Define o caminho onde a foto será salva (crie a pasta 'images' na raiz do projeto)
+    
     file_path = f"images/{file.filename}"
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
     
-    # Retorna o caminho que o front-end deve salvar no banco
+    
     return {"url": f"http://127.0.0.1:8000/{file_path}"}
 
 @router.post("/", response_model=FerramentaResponse)
