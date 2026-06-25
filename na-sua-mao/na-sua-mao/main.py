@@ -71,7 +71,8 @@ def criar_dados_iniciais():
     
     db.commit()
     db.close()
-
+##from src.controllers import avaliacao_controller
+##app.include_router(avaliacao_controller.router)
 
 if __name__ == "__main__":
     import uvicorn
