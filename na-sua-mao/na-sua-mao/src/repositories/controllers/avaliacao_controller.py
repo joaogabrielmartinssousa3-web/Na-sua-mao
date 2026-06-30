@@ -1,38 +1,36 @@
-from fastapi import APIRouter, HTTPException
-from src.models.avaliacao import AvaliacaoCreate
-from src.repositories import avaliacao_repository
+from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from sqlalchemy.orm import Session
+from database import get_db
+from src.middlewares.auth import require_login
+from src.services.avaliacao_service import avaliar_experiencia
+from src.repositories.avaliacao_repository import buscar_avaliacoes_por_usuario, calcular_media_reputacao
+from models.models import Usuario
 
-router = APIRouter(prefix="/avaliacoes", tags=["Avaliações"])
-
-avaliacao_repository.criar_tabela()
-
-
-@router.post("/", response_model=dict)
-def criar_avaliacao(avaliacao: AvaliacaoCreate):
-    if avaliacao.nota < 1 or avaliacao.nota > 5:
-        raise HTTPException(status_code=400, detail="Nota deve ser entre 1 e 5")
-
-    avaliacao_id = avaliacao_repository.salvar_avaliacao(
-        avaliacao.aluguel_id,
-        avaliacao.avaliador_id,
-        avaliacao.avaliado_id,
-        avaliacao.nota,
-        avaliacao.comentario
-    )
-    return {"mensagem": "Avaliação criada com sucesso!", "id": avaliacao_id}
+router = APIRouter(tags=["Avaliações"])
+templates = Jinja2Templates(directory="templates")
 
 
-@router.get("/usuario/{avaliado_id}")
-def listar_avaliacoes(avaliado_id: int):
-    rows = avaliacao_repository.buscar_avaliacoes_por_usuario(avaliado_id)
-    return [
-        {
-            "id": r[0],
-            "aluguel_id": r[1],
-            "avaliador_id": r[2],
-            "avaliado_id": r[3],
-            "nota": r[4],
-            "comentario": r[5]
-        }
-        for r in rows
-    ]
+@router.get("/usuarios/{usuario_id}/reputacao", response_class=HTMLResponse)
+async def ver_reputacao(
+    request: Request,
+    usuario_id: int,
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(require_login)
+):
+    avaliado = db.query(Usuario).filter(Usuario.id_usuario == usuario_id).first()
+    if not avaliado:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado.")
+
+    avaliacoes = buscar_avaliacoes_por_usuario(db, usuario_id)
+    media = calcular_media_reputacao(db, usuario_id)
+
+    return templates.TemplateResponse("perfil_reputacao.html", {
+        "request": request,
+        "usuario": usuario,
+        "avaliado": avaliado,
+        "avaliacoes": avaliacoes,
+        "media": media,
+        "total_alugueis": avaliado.total_alugueis
+    })
