@@ -119,6 +119,32 @@ async def enviar_mensagem(request: Request, reserva_id: int, conteudo: str = For
     db.commit()
     return RedirectResponse(f"/reservas/{reserva_id}", status_code=302)
 
+@router.get("/reservas/{reserva_id}/avaliar", response_class=HTMLResponse)
+async def avaliar_page(request: Request, reserva_id: int, db: Session = Depends(get_db), usuario: Usuario = Depends(require_login)):
+    reserva = db.query(Reserva).filter(Reserva.id_reserva == reserva_id).first()
+    if not reserva:
+        return RedirectResponse("/meus-alugueis", status_code=302)
+
+    eh_locador = reserva.ferramenta.id_locador == usuario.id_usuario
+    eh_locatario = reserva.id_locatario == usuario.id_usuario
+    if not eh_locador and not eh_locatario:
+        return RedirectResponse("/meus-alugueis", status_code=302)
+
+    if reserva.status_reserva != StatusReserva.FINALIZADO:
+        return RedirectResponse(f"/reservas/{reserva_id}", status_code=302)
+
+    ja_avaliou = db.query(Avaliacao).filter(
+        Avaliacao.id_reserva == reserva_id, Avaliacao.id_avaliador == usuario.id_usuario
+    ).first()
+    if ja_avaliou:
+        return RedirectResponse(f"/reservas/{reserva_id}", status_code=302)
+
+    avaliado = reserva.locatario if eh_locador else reserva.ferramenta.locador
+
+    return templates.TemplateResponse("avaliar.html", {
+        "request": request, "usuario": usuario, "reserva": reserva,
+        "avaliado": avaliado, "erro": None
+    })
 @router.post("/reservas/{reserva_id}/avaliar")
 async def avaliar(request: Request, reserva_id: int, nota: int = Form(...), comentario: str = Form(...), db: Session = Depends(get_db), usuario: Usuario = Depends(require_login)):
     resultado = avaliar_experiencia(db, reserva_id, usuario.id_usuario, nota, comentario)

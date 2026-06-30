@@ -53,6 +53,11 @@
 
       
       <div class="space-y-3">
+        {% if reserva.status_reserva.value == 'Finalizado' and not avaliacao_usuario %}
+          <a href="/reservas/{{ reserva.id_reserva }}/avaliar" class="block text-center w-full bg-amber-500 hover:bg-amber-600 text-white py-3 rounded-2xl font-bold shadow-md transition-all">
+            ⭐ Avaliar Experiência
+          </a>
+        {% endif %}
         {% if eh_locador %}
           {% if reserva.status_reserva.value == 'Aguardando aprovação' %}
             <form method="POST" action="/reservas/{{ reserva.id_reserva }}/confirmar">

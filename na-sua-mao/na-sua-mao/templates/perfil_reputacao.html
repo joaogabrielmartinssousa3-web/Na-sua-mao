@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Reputação de {{ avaliado.nome }} — Na Sua Mão{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <a href="/" class="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-primary-600 transition">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+    Voltar
+  </a>
+</div>
+
+<div class="max-w-2xl mx-auto space-y-6">
+
+  <div class="bg-white rounded-3xl shadow-soft border border-gray-100 p-8">
+    <div class="flex items-center gap-6">
+      <div class="w-20 h-20 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center text-3xl font-bold flex-shrink-0">
+        {{ avaliado.nome[0].upper() }}
+      </div>
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">{{ avaliado.nome }}</h1>
+        <p class="text-sm text-gray-500 mt-1">Membro desde {{ avaliado.data_cadastro.strftime('%B de %Y') }}</p>
+        <div class="flex items-center gap-3 mt-3">
+          <div class="flex items-center gap-1">
+            <span class="text-yellow-400 text-xl">★</span>
+            <span class="text-xl font-bold text-gray-900">{{ "%.1f"|format(media) }}</span>
+          </div>
+          <span class="text-gray-300">|</span>
+          <span class="text-sm text-gray-500">{{ total_alugueis }} aluguel{% if total_alugueis != 1 %}s{% endif %} realizado{% if total_alugueis != 1 %}s{% endif %}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-3xl shadow-soft border border-gray-100 p-8">
+    <h2 class="text-lg font-bold text-gray-900 mb-6">Avaliações dos vizinhos</h2>
+
+    {% if avaliacoes %}
+      <div class="space-y-5">
+        {% for avaliacao in avaliacoes %}
+        <div class="pb-5 border-b border-gray-50 last:border-0 last:pb-0">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center text-sm font-bold">
+                {{ avaliacao.avaliador.nome[0].upper() }}
+              </div>
+              <span class="text-sm font-semibold text-gray-800">{{ avaliacao.avaliador.nome.split()[0] }}</span>
+            </div>
+            <div class="flex items-center gap-1">
+              {% for i in range(5) %}
+                <span class="text-sm {% if i < avaliacao.nota %}text-yellow-400{% else %}text-gray-200{% endif %}">★</span>
+              {% endfor %}
+            </div>
+          </div>
+          <p class="text-sm text-gray-600 leading-relaxed pl-10">{{ avaliacao.comentario }}</p>
+          <p class="text-xs text-gray-400 pl-10 mt-1">{{ avaliacao.data_avaliacao.strftime('%d/%m/%Y') }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center py-10">
+        <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-3xl text-gray-300">★</span>
+        </div>
+        <p class="font-bold text-gray-700 mb-1">Nenhuma avaliação ainda</p>
+        <p class="text-sm text-gray-400">Este vizinho ainda não recebeu avaliações.</p>
+      </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}
