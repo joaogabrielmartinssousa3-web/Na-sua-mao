@@ -78,7 +78,13 @@
           {% else %}
             <span class="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">{{ r.status_reserva.value }}</span>
           {% endif %}
-        </div>
+        </div
+        
+      h3 class="font-bold text-gray-900 text-lg mb-1">{{ r.ferramenta.titulo }}</h3>
+           <p class="text-xs text-gray-500 mt-2">
+             Fluxo do aluguel:
+              🟡 Aguardando → 🔵 Confirmado → 🟢 Em Uso → ✅ Finalizado
+       </p>
         
         <h3 class="font-bold text-gray-900 text-lg mb-1">{{ r.ferramenta.titulo }}</h3>
         <p class="text-sm text-gray-500">Proprietário: {{ r.ferramenta.locador.nome.split()[0] }} • R$ {{ "%.2f"|format(r.valor_total_calculado) }}</p>
